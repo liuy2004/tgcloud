@@ -1,0 +1,46 @@
+spring:
+  cloud:
+    config:
+      fail-fast: true
+      discovery:
+        enabled: true
+        service-id: tgcloud-config
+      label: ${spring.profiles.active}
+      profile: ${spring.profiles.active}
+    inetutils:
+      ignoredInterfaces:
+        - docker0
+        - veth.*
+        - VM.*
+      preferredNetworks:
+        - 192.168
+  devtools:
+    restart:
+      #热部署生效
+      enabled: true
+      #设置重启的目录
+      #additional-paths: src/main/java
+      #classpath目录下的WEB-INF文件夹内容修改不重启
+      #exclude: WEB-INF/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@${EUREKA_HOST:eureka.tgcloud.net}:${EUREKA_PORT:8761}/eureka/
+    instance:
+      # docker 部署开启
+      prefer-ip-address: true
+      status-page-url-path: /actuator/info
+      health-check-url-path: /actuator/health
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+
+

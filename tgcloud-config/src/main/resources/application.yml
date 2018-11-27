@@ -1,0 +1,51 @@
+server:
+  port: 8090
+spring:
+  profiles:
+    active: @profileActive@
+  application:
+    name: @pom.artifactId@
+  rabbitmq:
+    host: mq.tgcloud.net
+    port: 5672
+    username: admin
+    password: admin
+  boot:
+    admin:
+      client:
+        #如果Admin端设置了用户名密码访问，你也需要在客户端配置它们
+        username: admin
+        password: admin
+        instance:
+          #当前应用程序名字
+          name: @pom.artifactId@
+          #客户端是否提供本机真实ip
+          prefer-ip: true
+
+info:
+  owner: tigerphz
+  version: @project.version@
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+    instance:
+      # docker 部署开启
+      prefer-ip-address: true
+      status-page-url-path: /actuator/info
+      health-check-url-path: /actuator/health
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+logging:
+  level.root: info
+  path: logs/
+  file: ${spring.application.name}.log

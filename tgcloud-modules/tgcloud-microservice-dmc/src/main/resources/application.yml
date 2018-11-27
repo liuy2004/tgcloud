@@ -1,0 +1,52 @@
+server:
+  port: 8880
+spring:
+  application:
+    name: @pom.artifactId@
+  profiles:
+    active: @profileActive@
+  devtools:
+    restart:
+      enabled: false #热部署生效
+      additional-paths: src/main/java #设置重启的目录
+      exclude: WEB-INF/** #classpath目录下的WEB-INF文件夹内容修改不重启
+  datasource:
+    username: tiger
+    password: 123456
+  boot:
+    admin:
+      client:
+        #如果Admin端设置了用户名密码访问，你也需要在客户端配置它们
+        username: admin
+        password: admin
+        instance:
+          #当前应用程序名字
+          name: @pom.artifactId@
+          #客户端是否提供本机真实ip
+          prefer-ip: true
+  security:
+    user:
+      name: admin
+      password: admin
+  sleuth:
+    sampler:
+      #默认为0.1；表示调用10次才会上传一次
+      probability: 0.1
+  #指定zipkin中心 不使用mq需要指定
+#  zipkin:
+#    base-url: http://zipkin.tgcloud.net:9411
+zipkin:
+  rabbitmq:
+    queue: zipkin
+
+tgcloud:
+  swagger:
+    title: @pom.artifactId@
+    description: @pom.description@
+  oauth2:
+    jwtSigningKey: tgcloud
+
+# Twitter_Snowflake 配置
+snowflakeid:
+  workerId: 0
+  datacenterId: 0

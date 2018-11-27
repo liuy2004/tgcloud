@@ -1,0 +1,26 @@
+DROP TABLE IF EXISTS uac_permission;
+CREATE TABLE `uac_permission` (
+  `id` bigint(20) NOT NULL,
+  `permname` varchar(50) NOT NULL,
+  `status` int(11) DEFAULT '0',
+  `description` varchar(200) DEFAULT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
+  `icon` varchar(50) DEFAULT NULL,
+  `sort` int(11) DEFAULT NULL,
+  `parentid` bigint(20) DEFAULT NULL,
+  `url` varchar(200) DEFAULT NULL,
+  `action` varchar(200) DEFAULT NULL,
+  `code` varchar(200) DEFAULT NULL,
+  `component` varchar(200) DEFAULT NULL,
+  `title` varchar(200) DEFAULT NULL,
+  `path` varchar(200) DEFAULT NULL,
+  `isnavigate` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT '0' COMMENT '版本号',
+  `creator` varchar(20) DEFAULT '' COMMENT '创建人',
+  `creator_id` bigint(20) DEFAULT NULL COMMENT '创建人ID',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_operator` varchar(20) DEFAULT NULL COMMENT '更新操作人',
+  `update_operator_id` bigint(20) DEFAULT NULL COMMENT '更新操作人ID',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

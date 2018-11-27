@@ -1,0 +1,101 @@
+server:
+  port: 7979
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  profiles:
+    active: @profileActive@
+  application:
+    name: @pom.artifactId@
+  redis:
+    host: localhost
+    port: 6379
+    # 数据库连接超时时间，2.0 中该参数的类型为Duration，这里在配置的时候需要指明单位
+    timeout: 60s
+    # 连接池配置，2.0中直接使用jedis或者lettuce配置连接池
+    jedis:
+      pool:
+        # 最大空闲连接数
+        max-idle: 500
+        # 最小空闲连接数
+        min-idle: 50
+        # 等待可用连接的最大时间，负数为不限制
+        max-wait:  -1s
+        # 最大活跃连接数，负数为不限制
+        max-active: -1
+  sleuth:
+    enabled: true
+    http:
+      legacy:
+        enabled: true
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true #可以通过小写的服务名称进行访问了
+      routes:
+      - id: tgcloud-security-authserver
+        uri: lb://tgcloud-security-authserver
+        order: 8000
+        predicates:
+        - Path=/aus/**
+        filters:
+        - StripPrefix=1
+      - id: tgcloud-microservice-dmc
+        uri: lb://tgcloud-microservice-dmc
+        order: 8000
+        predicates:
+        - Path=/dmc/**
+        filters:
+        - StripPrefix=1
+#  security:
+#    user:
+#      name: admin
+#      password: admin
+
+info:
+  owner: tigerphz
+  version: @project.version@
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+    instance:
+      # docker 部署开启
+      prefer-ip-address: true
+      status-page-url-path: /actuator/info
+      health-check-url-path: /actuator/health
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+
+security:
+  oauth2:
+    client:
+      clientId: tgcloud-client-gateway
+      clientSecret: tgcloudClientSecret
+      access-token-uri: http://${GATEWAY_HOST:localhost}:${GATEWAY_PORT:7979}/aus/oauth/token
+      user-authorization-uri: http://${GATEWAY_HOST:localhost}:${GATEWAY_PORT:7979}/aus/oauth/authorize
+    resource:
+      user-info-uri: http://localhost:8999/user
+      prefer-token-info: false
+      jwt:
+        key-uri: http://localhost:8999/oauth/token_key
+
+logging:
+  level.root: info
+  path: logs/
+  file: ${spring.application.name}.log
+

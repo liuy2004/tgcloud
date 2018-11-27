@@ -1,0 +1,34 @@
+server:
+  port: 8999
+spring:
+  profiles:
+    active: @profileActive@
+  application:
+    name: @pom.artifactId@
+  devtools:
+    restart:
+      enabled: false #热部署生效
+      additional-paths: src/main/java #设置重启的目录
+      exclude: WEB-INF/** #classpath目录下的WEB-INF文件夹内容修改不重启
+  datasource:
+    username: tiger
+    password: 123456
+  boot:
+    admin:
+      client:
+        #如果Admin端设置了用户名密码访问，你也需要在客户端配置它们
+        username: admin
+        password: admin
+        instance:
+          #当前应用程序名字
+          name: @pom.artifactId@
+          #客户端是否提供本机真实ip
+          prefer-ip: true
+  security:
+    user:
+      name: admin
+      password: admin
+
+tgcloud:
+  oauth2:
+    jwtSigningKey: tgcloud

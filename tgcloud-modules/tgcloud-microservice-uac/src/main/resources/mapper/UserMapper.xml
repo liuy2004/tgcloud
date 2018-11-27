@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tiger.tgcloud.uac.repository.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.tiger.tgcloud.uac.api.model.domain.UserInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="passwordhash" jdbcType="VARCHAR" property="passwordhash"/>
+        <result column="passwordsalt" jdbcType="VARCHAR" property="passwordsalt"/>
+        <result column="gender" jdbcType="INTEGER" property="gender"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="is_mobile_active" jdbcType="INTEGER" property="isMobileActive"/>
+        <result column="identitycard" jdbcType="VARCHAR" property="identitycard"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="is_email_active" jdbcType="INTEGER" property="isEmailActive"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="deptid" jdbcType="BIGINT" property="deptid"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="creator_id" jdbcType="BIGINT" property="creatorId"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="update_operator" jdbcType="VARCHAR" property="updateOperator"/>
+        <result column="update_operator_id" jdbcType="BIGINT" property="updateOperatorId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deptname" jdbcType="VARCHAR" property="deptname"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, version, username, nickname, passwordhash, passwordsalt, gender, status, code,
+    mobile, is_mobile_active, identitycard, email, is_email_active, source, type, qq,
+    deptid, remark, creator, creator_id, created_time, update_operator, update_operator_id,
+    update_time
+    </sql>
+    <sql id="Base_Colunm_Where">
+        <if test="version != null">
+            and ${alias}.version = #{version,jdbcType=INTEGER}
+        </if>
+        <if test="username != null">
+            and ${alias}.username = #{username,jdbcType=VARCHAR}
+        </if>
+        <if test="nickname != null">
+            and ${alias}.nickname = #{nickname,jdbcType=VARCHAR}
+        </if>
+        <if test="passwordhash != null">
+            and ${alias}.passwordhash = #{passwordhash,jdbcType=VARCHAR}
+        </if>
+        <if test="passwordsalt != null">
+            and ${alias}.passwordsalt = #{passwordsalt,jdbcType=VARCHAR}
+        </if>
+        <if test="gender != null">
+            and ${alias}.gender = #{gender,jdbcType=INTEGER}
+        </if>
+        <if test="status != null">
+            and ${alias}.status = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="code != null">
+            and ${alias}.code = #{code,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null">
+            and ${alias}.mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="isMobileActive != null">
+            and ${alias}.is_mobile_active = #{isMobileActive,jdbcType=INTEGER}
+        </if>
+        <if test="identitycard != null">
+            and ${alias}.identitycard = #{identitycard,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null">
+            and ${alias}.email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="isEmailActive != null">
+            and ${alias}.is_email_active = #{isEmailActive,jdbcType=INTEGER}
+        </if>
+        <if test="source != null">
+            and ${alias}.source = #{source,jdbcType=VARCHAR}
+        </if>
+        <if test="type != null">
+            and ${alias}.type = #{type,jdbcType=VARCHAR}
+        </if>
+        <if test="qq != null">
+            and ${alias}.qq = #{qq,jdbcType=VARCHAR}
+        </if>
+        <if test="deptid != null">
+            and ${alias}.deptid = #{deptid,jdbcType=BIGINT}
+        </if>
+        <if test="remark != null">
+            and ${alias}.remark = #{remark,jdbcType=VARCHAR}
+        </if>
+        <if test="creator != null">
+            and ${alias}.creator = #{creator,jdbcType=VARCHAR}
+        </if>
+        <if test="creatorId != null">
+            and ${alias}.creator_id = #{creatorId,jdbcType=BIGINT}
+        </if>
+        <if test="createdTime != null">
+            and ${alias}.created_time = #{createdTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateOperator != null">
+            and ${alias}.update_operator = #{updateOperator,jdbcType=VARCHAR}
+        </if>
+        <if test="updateOperatorId != null">
+            and ${alias}.update_operator_id = #{updateOperatorId,jdbcType=BIGINT}
+        </if>
+        <if test="updateTime != null">
+            and ${alias}.update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <select id="selectByCondition" parameterType="com.tiger.tgcloud.uac.model.query.UserParam"
+            resultMap="BaseResultMap">
+        SELECT
+        id, version, username, nickname, gender, status, code,
+        mobile, is_mobile_active, identitycard, email, is_email_active, source, type, qq,
+        deptid, remark, creator, creator_id, created_time, update_operator, update_operator_id,
+        update_time,
+        (select deptname from uac_department d where d.id=u.deptid) deptname
+        FROM uac_user u
+        <where>
+            <if test="username != null">
+                and u.username = #{username,jdbcType=VARCHAR}
+            </if>
+            <if test="nickname != null">
+                and u.nickname = #{nickname,jdbcType=VARCHAR}
+            </if>
+            <if test="gender != null">
+                and u.gender = #{gender,jdbcType=INTEGER}
+            </if>
+            <if test="status != null">
+                and u.status = #{status,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null">
+                and u.code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null">
+                and u.mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="identitycard != null">
+                and u.identitycard = #{identitycard,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null">
+                and u.email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="source != null">
+                and u.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and u.type = #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="qq != null">
+                and u.qq = #{qq,jdbcType=VARCHAR}
+            </if>
+            <if test="deptid != null">
+                and u.deptid = #{deptid,jdbcType=BIGINT}
+            </if>
+        </where>
+        order by u.update_time desc
+    </select>
+
+    <delete id="deleteUserRoleRelationByUserId">
+        DELETE FROM uac_user_role
+        WHERE userid = #{userId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertUserRoleRelation">
+        INSERT uac_user_role (userid, roleid)
+        VALUES (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
+    </insert>
+</mapper>
